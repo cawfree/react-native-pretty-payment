@@ -31,9 +31,10 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 200,
     fontWeight: '200',
-    color: 'rgba(0, 0, 0.0980392, 0.22)',
-    textShadowColor: 'rgba(0, 0, 0.0980392, 1)',
-    textShadowRadius: 10,
+    color: 'white',
+    opacity: 0.8,
+    textShadowColor: 'rgba(255, 255, 255, 1)',
+    textShadowRadius: 1,
   },
   center: {alignItems: 'center', justifyContent: 'center'},
   currencyText: {
@@ -41,8 +42,8 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     color: 'white',
     opacity: 0.75,
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowRadius: 4,
+    textShadowColor: 'rgba(255, 255, 255, 1)',
+    textShadowRadius: 1,
   },
   flex: {flex: 1},
 
