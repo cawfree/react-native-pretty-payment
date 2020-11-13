@@ -36,6 +36,8 @@ export type usePaymentButtonsParams = {
 };
 
 export type PaymentButtonsHelpers = {
+  readonly overflow: boolean;
+  readonly underflow: boolean;
   readonly getDigits: () => readonly ButtonProps[];
   readonly getBackspace: () => ButtonProps;
   readonly getPeriod: () => ButtonProps;
@@ -68,10 +70,7 @@ export default function usePaymentButtons(
     [onChange],
   );
   const removeDigit = useCallback(() => {
-    onChange((e) => {
-      const next = e.substring(0, e.length - 1) || ZERO_STR;
-      return next;
-    });
+    onChange((e) => e.substring(0, e.length - 1) || ZERO_STR);
   }, [onChange]);
   const appendPeriod = useCallback(() => {
     onChange((e) => {
@@ -98,11 +97,14 @@ export default function usePaymentButtons(
   const nextValue = new BigNumber(value);
   const hasPeriod = value.includes(Controls.PERIOD);
   const setValue = useCallback((b: BigNumber) => onChange(b.toString()), [onChange]);
+  const didReachMaximum = nextValue.isGreaterThan(max);
   // TODO: an onChange for dynamics
   return [
     value,
     nextValue,
     {
+      overflow: nextValue.isGreaterThan(max),
+      underflow: nextValue.isLessThan(min),
       getDigits,
       getBackspace,
       getPeriod,

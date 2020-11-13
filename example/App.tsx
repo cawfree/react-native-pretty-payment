@@ -2,20 +2,25 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import {usePaymentButtons, Controls} from './lib';
+import {usePaymentButtons} from './lib';
 
 const styles = StyleSheet.create({
   button: {width: 50, height: 50, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center'},
 });
 
 export default function App() {
-  const [valueAsString, value, opts] = usePaymentButtons(new BigNumber(0), {min: new BigNumber(0), max: new BigNumber(100)});
-  const {getDigits, getPeriod, getBackspace, setValue} = opts;
-  //console.warn({value});
+  const [valueAsString, value, opts] = usePaymentButtons(
+    new BigNumber(50),
+    {min: new BigNumber(50), max: new BigNumber(100)},
+  );
+  const {getDigits, getPeriod, getBackspace, setValue, overflow, underflow} = opts;
   return (
     <>
       <SafeAreaView />
-      <Text children={valueAsString}/>
+      <Text
+        style={{color: (overflow || underflow) ? 'red' : undefined}}
+        children={`${valueAsString}${overflow ? ' (over)' : underflow ? ' (under)' : ''}`}
+      />
       {/* i want to iterate */}
       {getDigits().map(
         (props, i) => (
