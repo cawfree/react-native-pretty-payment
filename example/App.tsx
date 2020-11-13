@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   SafeAreaView,
+  useWindowDimensions,
   TouchableOpacity,
  } from 'react-native';
 import BigNumber from 'bignumber.js';
@@ -32,11 +33,17 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0.0980392, 0.22)',
   },
   center: {alignItems: 'center', justifyContent: 'center'},
+  currencyText: {
+    fontSize: 200,
+    fontWeight: '200',
+    color: 'white',
+  },
   flex: {flex: 1},
 
 });
 
 export default function App() {
+  const {height} = useWindowDimensions();
   const [valueAsString, value, opts] = usePaymentButtons(
     new BigNumber(50),
     {min: new BigNumber(50), max: new BigNumber(100)},
@@ -84,24 +91,27 @@ export default function App() {
   }, [renderCharacter]);
   return (
     <>
-      <SafeAreaView />
       <Image
         blurRadius={100}
         style={StyleSheet.absoluteFill}
         source={{uri: 'https://i.guim.co.uk/img/media/d143e03bccd1150ef52b8b6abd7f3e46885ea1b3/0_182_5472_3283/master/5472.jpg?width=1200&quality=85&auto=format&fit=max&s=d5a74a011c3fef1ad9c1c962721d221d'}}
       />
-      <PaymentAmount
-        {...opts}
-        height={100}
-        value={valueAsString}
-      />
-      <PaymentPad
-        {...opts}
-        style={{padding: 50}}
-        renderDigit={renderDigit}
-        renderBackspace={renderIsolated}
-        renderPeriod={renderIsolated}
-      />
+      <ScrollView>
+        <View style={{height: height * 0.125}} />
+        <PaymentAmount
+          {...opts}
+          style={styles.currencyText}
+          height={100}
+          value={valueAsString}
+        />
+        <PaymentPad
+          {...opts}
+          style={{paddingHorizontal: 50, paddingVertical: 10}}
+          renderDigit={renderDigit}
+          renderBackspace={renderIsolated}
+          renderPeriod={renderIsolated}
+        />
+      </ScrollView>
     </>
   );
 }

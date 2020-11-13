@@ -1,10 +1,12 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, ScrollView, ViewStyle} from 'react-native';
+import {Text, View, StyleSheet, ScrollView, ViewStyle, TextStyle} from 'react-native';
+import {useSplitStyles} from 'react-native-split-styles';
+import TextPreset from 'react-native-split-styles/dist/presets/Text';
 
 import type {PaymentButtonsHelpers} from '../hooks';
 
 export type PaymentAmountProps = PaymentButtonsHelpers & {
-  readonly style?: ViewStyle;
+  readonly style?: ViewStyle | TextStyle;
   readonly height: number;
   readonly value: string;
 };
@@ -33,8 +35,9 @@ export default function PaymentAmount({
     setLayout(layout);
   }, [setLayout]);
   const maxHeight = Math.min(height, height / (Math.max(value.length, 1) * 0.15));
+  const [textStyle, extraStyles] = useSplitStyles(style || {}, TextPreset);
   return (
-    <View style={[styles.container, StyleSheet.flatten(style), {height}]} onLayout={onLayout}>
+    <View style={[styles.container, extraStyles, {height}]} onLayout={onLayout}>
       {!!layout && (
         <ScrollView
           style={layout}
@@ -42,10 +45,7 @@ export default function PaymentAmount({
           showsHorizontalScrollIndicator={false}>
           <View style={[styles.center, layout]}>
             <Text 
-              style={{
-                fontSize: height,
-                maxHeight,
-              }}
+              style={[{fontSize: height, maxHeight}, textStyle]}
               adjustsFontSizeToFit
               children={value}
             />
