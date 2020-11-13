@@ -31,6 +31,7 @@ export default function PaymentPad({
   React.useEffect(() => {
     Animated.sequence(
       [
+        Animated.delay(50),
         Animated.parallel([
           Animated.timing(opacity, {
             toValue: 1,
@@ -43,7 +44,7 @@ export default function PaymentPad({
               easing: Easing.ease,
               toValue: 1,
               useNativeDriver: true,
-              duration: 350,
+              duration: 300,
             })),
           ),
         ]),
