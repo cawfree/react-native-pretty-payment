@@ -3,6 +3,7 @@
     "bignumber.js": "^9.0.1",
     "expo": "~39.0.0",
     "expo-blur": "^8.2.0",
+    "lottie-react-native": "~2.6.1",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",

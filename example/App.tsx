@@ -3,13 +3,12 @@ import {
   ScrollView,
   View,
   Text,
-  Image,
   StyleSheet,
-  SafeAreaView,
   useWindowDimensions,
   TouchableOpacity,
  } from 'react-native';
 import BigNumber from 'bignumber.js';
+import Animation from 'lottie-react-native';
 
 import {
   BlurryTouchable,
@@ -18,6 +17,8 @@ import {
   ButtonProps,
   PaymentAmount,
 } from './lib';
+
+import Gradient from './assets/gradient.json';
 
 const styles = StyleSheet.create({
   buttonMargin: {
@@ -29,14 +30,19 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 200,
-    fontWeight: '100',
+    fontWeight: '200',
     color: 'rgba(0, 0, 0.0980392, 0.22)',
+    textShadowColor: 'rgba(0, 0, 0.0980392, 1)',
+    textShadowRadius: 10,
   },
   center: {alignItems: 'center', justifyContent: 'center'},
   currencyText: {
     fontSize: 200,
     fontWeight: '200',
     color: 'white',
+    opacity: 0.75,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowRadius: 4,
   },
   flex: {flex: 1},
 
@@ -45,7 +51,7 @@ const styles = StyleSheet.create({
 export default function App() {
   const {height} = useWindowDimensions();
   const [valueAsString, value, opts] = usePaymentButtons(
-    new BigNumber(50),
+    new BigNumber(0),
     {min: new BigNumber(50), max: new BigNumber(100)},
   );
   const renderCharacter = React.useCallback((children: string): JSX.Element => {
@@ -79,7 +85,7 @@ export default function App() {
         style={[
           styles.buttonMargin,
           styles.flex,
-          {borderRadius: '50%'},
+          {borderRadius: '45%'},
         ]}
         min={40}
         max={100}
@@ -91,13 +97,17 @@ export default function App() {
   }, [renderCharacter]);
   return (
     <>
-      <Image
-        blurRadius={100}
-        style={StyleSheet.absoluteFill}
-        source={{uri: 'https://i.guim.co.uk/img/media/d143e03bccd1150ef52b8b6abd7f3e46885ea1b3/0_182_5472_3283/master/5472.jpg?width=1200&quality=85&auto=format&fit=max&s=d5a74a011c3fef1ad9c1c962721d221d'}}
+      <Animation
+        style={{
+          position: 'absolute',
+          height,
+        }}
+        source={Gradient}
+        autoPlay
+        loop
       />
       <ScrollView>
-        <View style={{height: height * 0.125}} />
+        <View style={{height: height * 0.16}} />
         <PaymentAmount
           {...opts}
           style={styles.currencyText}
