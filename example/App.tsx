@@ -1,8 +1,22 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import {
+  ScrollView,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+ } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import {BlurryTouchable, usePaymentButtons, PaymentPad, ButtonProps, Controls} from './lib';
+import {
+  BlurryTouchable,
+  usePaymentButtons,
+  PaymentPad,
+  ButtonProps,
+  PaymentAmount,
+} from './lib';
 
 const styles = StyleSheet.create({
   buttonMargin: {
@@ -27,7 +41,6 @@ export default function App() {
     new BigNumber(50),
     {min: new BigNumber(50), max: new BigNumber(100)},
   );
-  const {getDigits, getPeriod, getBackspace, setValue, overflow, underflow} = opts;
   const renderCharacter = React.useCallback((children: string): JSX.Element => {
     return (
       <View
@@ -77,7 +90,11 @@ export default function App() {
         style={StyleSheet.absoluteFill}
         source={{uri: 'https://i.guim.co.uk/img/media/d143e03bccd1150ef52b8b6abd7f3e46885ea1b3/0_182_5472_3283/master/5472.jpg?width=1200&quality=85&auto=format&fit=max&s=d5a74a011c3fef1ad9c1c962721d221d'}}
       />
-      <Text children={valueAsString}/>
+      <PaymentAmount
+        {...opts}
+        height={100}
+        value={valueAsString}
+      />
       <PaymentPad
         {...opts}
         style={{padding: 50}}
