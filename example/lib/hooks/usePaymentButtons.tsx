@@ -1,9 +1,8 @@
-import {SyntheticEvent, useCallback, useState} from 'react';
+import {useCallback, useState} from 'react';
 import BigNumber from 'bignumber.js';
-import { GestureResponderEvent } from 'react-native';
+import {GestureResponderEvent} from 'react-native';
 
 const ZERO_STR = '0';
-const ZERO_BIG = new BigNumber(ZERO_STR);
 type onPressHandler = (e: GestureResponderEvent) => void;
 
 export enum Controls {
@@ -13,6 +12,7 @@ export enum Controls {
 
 export type ButtonProps = {
   readonly onPress: onPressHandler;
+  readonly children: string;
 };
 
 export type Buttons = {
@@ -56,8 +56,9 @@ export default function usePaymentButtons(
 ): usePaymentButtonsResult {
   const {min, max} = params;
   const [value, onChange] = useState<string>(() => initialValue.toString());
-  const buildButtonProps = useCallback((onPress: onPressHandler) => ({
+  const buildButtonProps = useCallback((onPress: onPressHandler, children: string): ButtonProps => ({
     onPress,
+    children,
   }), []);
   const appendDigit = useCallback(
     (nextDigit: string) => {
@@ -83,22 +84,19 @@ export default function usePaymentButtons(
   const props = [];
   for (let i = 0; i < 10; i += 1) {
     const onPress = useCallback(() => appendDigit(`${i}`), [appendDigit]);
-    props.push(buildButtonProps(onPress));
+    props.push(buildButtonProps(onPress, `${i}`));
   }
-  const buttons = (Object.assign({
-    [Controls.BACKSPACE]: buildButtonProps(removeDigit),
-    [Controls.PERIOD]: buildButtonProps(appendPeriod),
-  }, props) as unknown) as Buttons;
+  const [buttons] = useState(() => (Object.assign({
+    [Controls.BACKSPACE]: buildButtonProps(removeDigit, Controls.BACKSPACE),
+    [Controls.PERIOD]: buildButtonProps(appendPeriod, Controls.PERIOD),
+  }, props) as unknown) as Buttons);
   const getDigits = useCallback(() => {
     return Object.values(Object.fromEntries(Object.entries(buttons).filter(([k]) => !isNaN(parseInt(k)))));
   }, [buttons]);
   const getBackspace = useCallback(() => buttons[Controls.BACKSPACE], [buttons]);
   const getPeriod = useCallback(() => buttons[Controls.PERIOD], [buttons]);
-  const nextValue = new BigNumber(value);
-  const hasPeriod = value.includes(Controls.PERIOD);
   const setValue = useCallback((b: BigNumber) => onChange(b.toString()), [onChange]);
-  const didReachMaximum = nextValue.isGreaterThan(max);
-  // TODO: an onChange for dynamics
+  const nextValue = new BigNumber(value);
   return [
     value,
     nextValue,

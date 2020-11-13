@@ -1,1 +1,1 @@
-export {default as usePaymentButtons, Controls} from './usePaymentButtons';
+export {default as usePaymentButtons, Controls, PaymentButtonsHelpers, ButtonProps} from './usePaymentButtons';

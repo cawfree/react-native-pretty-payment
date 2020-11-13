@@ -1,11 +1,25 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import BigNumber from 'bignumber.js';
 
-import {usePaymentButtons} from './lib';
+import {BlurryTouchable, usePaymentButtons, PaymentPad, ButtonProps, Controls} from './lib';
 
 const styles = StyleSheet.create({
-  button: {width: 50, height: 50, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center'},
+  buttonMargin: {
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+  buttonPadding: {
+    padding: 10,
+  },
+  buttonText: {
+    fontSize: 200,
+    fontWeight: '100',
+    color: 'rgba(0, 0, 0.0980392, 0.22)',
+  },
+  center: {alignItems: 'center', justifyContent: 'center'},
+  flex: {flex: 1},
+
 });
 
 export default function App() {
@@ -14,33 +28,63 @@ export default function App() {
     {min: new BigNumber(50), max: new BigNumber(100)},
   );
   const {getDigits, getPeriod, getBackspace, setValue, overflow, underflow} = opts;
+  const renderCharacter = React.useCallback((children: string): JSX.Element => {
+    return (
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          styles.buttonPadding,
+          styles.center,
+        ]}>
+        <Text
+          style={styles.buttonText}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          children={children}
+        />
+      </View>
+    );
+  }, []);
+  const renderIsolated = React.useCallback((props: ButtonProps): JSX.Element => {
+    return (
+      <TouchableOpacity style={styles.flex} onPress={props.onPress}>
+        {renderCharacter(props.children)}
+      </TouchableOpacity>
+    );
+  }, [renderCharacter]);
+  const renderDigit = React.useCallback((props: ButtonProps): JSX.Element => {
+    return (
+      <BlurryTouchable
+        onPress={props.onPress}
+        style={[
+          styles.buttonMargin,
+          styles.flex,
+          {borderRadius: '50%'},
+        ]}
+        min={40}
+        max={100}
+        duration={60}
+      >
+        {renderCharacter(props.children)}
+      </BlurryTouchable>
+    );
+  }, [renderCharacter]);
   return (
     <>
       <SafeAreaView />
-      <Text
-        style={{color: (overflow || underflow) ? 'red' : undefined}}
-        children={`${valueAsString}${overflow ? ' (over)' : underflow ? ' (under)' : ''}`}
+      <Image
+        blurRadius={100}
+        style={StyleSheet.absoluteFill}
+        source={{uri: 'https://i.guim.co.uk/img/media/d143e03bccd1150ef52b8b6abd7f3e46885ea1b3/0_182_5472_3283/master/5472.jpg?width=1200&quality=85&auto=format&fit=max&s=d5a74a011c3fef1ad9c1c962721d221d'}}
       />
-      {/* i want to iterate */}
-      {getDigits().map(
-        (props, i) => (
-          <TouchableOpacity {...props} style={styles.button} key={`b${i}`}>
-            <Text children={`${i}`} />
-          </TouchableOpacity>
-        ),
-      )}
-      <TouchableOpacity {...getBackspace()} style={styles.button}>
-        <Text children="<" />
-      </TouchableOpacity>
-      <TouchableOpacity {...getPeriod()} style={styles.button}>
-        <Text children="." />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setValue(new BigNumber(Math.random()))} style={styles.button}>
-        <Text children="Rand" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setValue(new BigNumber(0))} style={styles.button}>
-        <Text children="Reset" />
-      </TouchableOpacity>
+      <Text children={valueAsString}/>
+      <PaymentPad
+        {...opts}
+        style={{padding: 50}}
+        renderDigit={renderDigit}
+        renderBackspace={renderIsolated}
+        renderPeriod={renderIsolated}
+      />
     </>
   );
 }
