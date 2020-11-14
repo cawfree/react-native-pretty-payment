@@ -104,7 +104,7 @@ export default function App() {
           height,
         }}
         source={Gradient}
-        autoPlay
+        autoPlay={false}
         loop
       />
       <ScrollView>
