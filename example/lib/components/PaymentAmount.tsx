@@ -34,7 +34,7 @@ export default function PaymentAmount({
   const onLayout = React.useCallback(({nativeEvent: {layout}}) => {
     setLayout(layout);
   }, [setLayout]);
-  const maxHeight = Math.min(height, height / (Math.max(children.length, 1) * 0.11));
+  const maxHeight = Math.min(height, height / (Math.max(children.length, 1) * 0.15));
   const [textStyle, extraStyles] = useSplitStyles(style || {}, TextPreset);
   return (
     <View style={[styles.container, extraStyles, {height}]} onLayout={onLayout}>

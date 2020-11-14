@@ -124,8 +124,7 @@ export default function App() {
         style={[
           styles.buttonMargin,
           styles.flex,
-          {borderRadius: '45%'},
-          {opacity: props.disabled ? 0.2 : 1.0},
+          {borderRadius: '40%'},
         ]}
         min={blurry ? 40 : 0}
         max={blurry ? 100 : 0}
@@ -143,7 +142,7 @@ export default function App() {
           height,
         }}
         source={Gradient}
-        autoPlay={false}
+        autoPlay
         loop
       />
       <ScrollView>

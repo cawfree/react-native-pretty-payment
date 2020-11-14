@@ -1,6 +1,6 @@
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import BigNumber from 'bignumber.js';
-import {GestureResponderEvent, LayoutAnimation} from 'react-native';
+import {Platform, GestureResponderEvent, LayoutAnimation, Vibration} from 'react-native';
 import {useImmediateLayoutAnimation} from 'use-layout-animation';
 
 const ZERO_STR = '0';
@@ -91,7 +91,10 @@ export default function usePaymentButtons(
 
   const props = [];
   for (let i = 0; i < 10; i += 1) {
-    const onPress = useCallback(() => appendDigit(`${i}`), [appendDigit]);
+    const onPress = useCallback(
+      () => appendDigit(`${i}`),
+      [appendDigit],
+    );
     const disabled = new BigNumber(`${value}${i}`).gt(max);
     props.push(buildButtonProps(onPress, disabled, `${i}`));
   }
@@ -110,7 +113,10 @@ export default function usePaymentButtons(
 
   const overflow = nextValue.isGreaterThan(max);
   const underflow = nextValue.isLessThan(min);
-  useImmediateLayoutAnimation([overflow, underflow], LayoutAnimation.Presets.easeInEaseOut);
+  useImmediateLayoutAnimation([overflow, underflow], LayoutAnimation.Presets.spring);
+  useEffect(() => {
+    (Platform.OS !== 'web' && overflow || underflow) && Vibration.vibrate();
+  }, [overflow, underflow]);
   return [
     value,
     nextValue,
