@@ -1,3 +1,6 @@
+import "@formatjs/intl-numberformat/polyfill";
+import "@formatjs/intl-numberformat/locale-data/en";
+
 import React from 'react';
 import {
   ScrollView,
@@ -9,6 +12,7 @@ import {
  } from 'react-native';
 import BigNumber from 'bignumber.js';
 import Animation from 'lottie-react-native';
+import {FormattedNumber, IntlProvider, useIntl} from 'react-intl';
 
 import {
   BlurryTouchable,
@@ -16,6 +20,7 @@ import {
   PaymentPad,
   ButtonProps,
   PaymentAmount,
+  PaymentButtonsHelpers,
 } from './lib';
 
 import Gradient from './assets/gradient.json';
@@ -48,6 +53,27 @@ const styles = StyleSheet.create({
   flex: {flex: 1},
 
 });
+
+type AmountProps = PaymentButtonsHelpers & {
+  readonly valueAsString: string;
+};
+
+function Amount({valueAsString, ...props}: AmountProps): JSX.Element {
+  const intl = useIntl();
+  intl.formatNumber();
+  return (
+    <PaymentAmount
+      {...props}
+      style={styles.currencyText}
+      height={100}
+    >
+      {intl.formatNumber(
+        valueAsString,
+        {style: 'currency', currency: 'usd'},
+      )}
+    </PaymentAmount>
+  );
+}
 
 export default function App() {
   const {height} = useWindowDimensions();
@@ -97,7 +123,7 @@ export default function App() {
     );
   }, [renderCharacter]);
   return (
-    <>
+    <IntlProvider locale="en">
       <Animation
         style={{
           position: 'absolute',
@@ -109,11 +135,9 @@ export default function App() {
       />
       <ScrollView>
         <View style={{height: height * 0.16}} />
-        <PaymentAmount
+        <Amount
           {...opts}
-          style={styles.currencyText}
-          height={100}
-          value={valueAsString}
+          valueAsString={valueAsString}
         />
         <PaymentPad
           {...opts}
@@ -123,6 +147,6 @@ export default function App() {
           renderPeriod={renderIsolated}
         />
       </ScrollView>
-    </>
+    </IntlProvider>
   );
 }

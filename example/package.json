@@ -1,11 +1,13 @@
 {
   "dependencies": {
+    "@formatjs/intl-numberformat": "^5.7.6",
     "bignumber.js": "^9.0.1",
     "expo": "~39.0.0",
     "expo-blur": "^8.2.0",
     "lottie-react-native": "~2.6.1",
     "react": "~16.13.0",
     "react-dom": "~16.13.0",
+    "react-intl": "^5.10.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
     "react-native-screens": "~2.10.1",
     "react-native-split-styles": "^0.0.1-alpha.1",

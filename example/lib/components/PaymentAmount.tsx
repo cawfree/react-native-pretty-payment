@@ -8,7 +8,7 @@ import type {PaymentButtonsHelpers} from '../hooks';
 export type PaymentAmountProps = PaymentButtonsHelpers & {
   readonly style?: ViewStyle | TextStyle;
   readonly height: number;
-  readonly value: string;
+  readonly children: string;
 };
 
 const styles = StyleSheet.create({
@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
 
 export default function PaymentAmount({
   style,
-  value,
+  children,
   height,
 }: PaymentAmountProps): JSX.Element {
   const [layout, setLayout] = React.useState(null);
   const onLayout = React.useCallback(({nativeEvent: {layout}}) => {
     setLayout(layout);
   }, [setLayout]);
-  const maxHeight = Math.min(height, height / (Math.max(value.length, 1) * 0.15));
+  const maxHeight = Math.min(height, height / (Math.max(children.length, 1) * 0.11));
   const [textStyle, extraStyles] = useSplitStyles(style || {}, TextPreset);
   return (
     <View style={[styles.container, extraStyles, {height}]} onLayout={onLayout}>
@@ -47,8 +47,9 @@ export default function PaymentAmount({
             <Text 
               style={[{fontSize: height, maxHeight}, textStyle]}
               adjustsFontSizeToFit
-              children={value}
-            />
+            >
+              {children}
+            </Text>
           </View>
         </ScrollView>
       )}
