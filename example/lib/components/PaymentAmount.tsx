@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, ScrollView, ViewStyle, TextStyle} from 'react-native';
+import {Text, View, StyleSheet, ScrollView, ViewStyle, TextStyle, LayoutAnimation} from 'react-native';
 import {useSplitStyles} from 'react-native-split-styles';
 import TextPreset from 'react-native-split-styles/dist/presets/Text';
 

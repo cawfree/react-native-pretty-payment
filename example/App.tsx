@@ -116,24 +116,19 @@ export default function App() {
       </View>
     );
   }, []);
-  const renderIsolated = React.useCallback((props: ButtonProps): JSX.Element => {
-    return (
-      <TouchableOpacity style={styles.flex} onPress={props.onPress}>
-        {renderCharacter(props.children)}
-      </TouchableOpacity>
-    );
-  }, [renderCharacter]);
-  const renderDigit = React.useCallback((props: ButtonProps): JSX.Element => {
+  const renderDigit = React.useCallback((props: ButtonProps, blurry: boolean): JSX.Element => {
     return (
       <BlurryTouchable
         onPress={props.onPress}
+        disabled={props.disabled}
         style={[
           styles.buttonMargin,
           styles.flex,
           {borderRadius: '45%'},
+          {opacity: props.disabled ? 0.2 : 1.0},
         ]}
-        min={40}
-        max={100}
+        min={blurry ? 40 : 0}
+        max={blurry ? 100 : 0}
         duration={60}
       >
         {renderCharacter(props.children)}
@@ -160,7 +155,7 @@ export default function App() {
             visible={opts.underflow || opts.overflow}
             duration={250}
           >
-            <Text style={styles.indicatorText} children={opts.underflow ? "UNDER" : opts.overflow ? "OVER" : ""} />
+            <Text style={styles.indicatorText} children={opts.underflow ? "MIN" : opts.overflow ? "MAX" : ""} />
           </BlurryIndicator>
         </View>
         <Amount
@@ -170,9 +165,9 @@ export default function App() {
         <PaymentPad
           {...opts}
           style={[styles.rowPadding, {paddingVertical: 10}]}
-          renderDigit={renderDigit}
-          renderBackspace={renderIsolated}
-          renderPeriod={renderIsolated}
+          renderDigit={e => renderDigit(e, true)}
+          renderBackspace={e => renderDigit(e, false)}
+          renderPeriod={e => renderDigit(e, false)}
         />
       </ScrollView>
     </IntlProvider>

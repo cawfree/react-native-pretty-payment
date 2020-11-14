@@ -13,6 +13,7 @@ export enum Controls {
 
 export type ButtonProps = {
   readonly onPress: onPressHandler;
+  readonly disabled: boolean;
   readonly children: string;
 };
 
@@ -58,10 +59,14 @@ export default function usePaymentButtons(
 ): usePaymentButtonsResult {
   const {min, max} = params;
   const [value, onChange] = useState<string>(() => initialValue.toString());
-  const buildButtonProps = useCallback((onPress: onPressHandler, children: string): ButtonProps => ({
-    onPress,
-    children,
-  }), []);
+  const hasPeriod = value.includes('.');
+  const nextValue = new BigNumber(value);
+
+  const buildButtonProps = useCallback((
+    onPress: onPressHandler,
+    disabled: boolean,
+    children: string,
+    ): ButtonProps => ({onPress, disabled, children}), []);
   const appendDigit = useCallback(
     (nextDigit: string) => {
       onChange((e) => {
@@ -77,21 +82,22 @@ export default function usePaymentButtons(
   }, [onChange]);
   const appendPeriod = useCallback(() => {
     onChange((e) => {
-      if (!e.includes(Controls.PERIOD)) {
+      if (!hasPeriod) {
         return `${e}${Controls.PERIOD}`;
       }
       return e;
     });
-  }, [onChange]);
+  }, [onChange, hasPeriod]);
 
   const props = [];
   for (let i = 0; i < 10; i += 1) {
     const onPress = useCallback(() => appendDigit(`${i}`), [appendDigit]);
-    props.push(buildButtonProps(onPress, `${i}`));
+    const disabled = new BigNumber(`${value}${i}`).gt(max);
+    props.push(buildButtonProps(onPress, disabled, `${i}`));
   }
   const buttons = (Object.assign({
-    [Controls.BACKSPACE]: buildButtonProps(removeDigit, Controls.BACKSPACE),
-    [Controls.PERIOD]: buildButtonProps(appendPeriod, Controls.PERIOD),
+    [Controls.BACKSPACE]: buildButtonProps(removeDigit, false, Controls.BACKSPACE),
+    [Controls.PERIOD]: buildButtonProps(appendPeriod, hasPeriod, Controls.PERIOD),
   }, props) as unknown) as Buttons;
 
   const getDigits = useCallback(() => {
@@ -100,8 +106,6 @@ export default function usePaymentButtons(
   const getBackspace = useCallback(() => buttons[Controls.BACKSPACE], [buttons]);
   const getPeriod = useCallback(() => buttons[Controls.PERIOD], [buttons]);
   const setValue = useCallback((b: BigNumber) => onChange(b.toString()), [onChange]);
-  const nextValue = new BigNumber(value);
-  const hasPeriod = value.includes('.');
   const numberOfFractionalDigits = hasPeriod ? value.substring(value.lastIndexOf('.')).length : 0;
 
   const overflow = nextValue.isGreaterThan(max);
