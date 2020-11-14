@@ -42,6 +42,7 @@ export type PaymentButtonsHelpers = {
   readonly getBackspace: () => ButtonProps;
   readonly getPeriod: () => ButtonProps;
   readonly setValue: (value: BigNumber) => void;
+  readonly numberOfFractionalDigits: number;
 };
 
 export type usePaymentButtonsResult = [
@@ -81,15 +82,17 @@ export default function usePaymentButtons(
       return e;
     });
   }, [onChange]);
+
   const props = [];
   for (let i = 0; i < 10; i += 1) {
     const onPress = useCallback(() => appendDigit(`${i}`), [appendDigit]);
     props.push(buildButtonProps(onPress, `${i}`));
   }
-  const [buttons] = useState(() => (Object.assign({
+  const buttons = (Object.assign({
     [Controls.BACKSPACE]: buildButtonProps(removeDigit, Controls.BACKSPACE),
     [Controls.PERIOD]: buildButtonProps(appendPeriod, Controls.PERIOD),
-  }, props) as unknown) as Buttons);
+  }, props) as unknown) as Buttons;
+
   const getDigits = useCallback(() => {
     return Object.values(Object.fromEntries(Object.entries(buttons).filter(([k]) => !isNaN(parseInt(k)))));
   }, [buttons]);
@@ -97,6 +100,8 @@ export default function usePaymentButtons(
   const getPeriod = useCallback(() => buttons[Controls.PERIOD], [buttons]);
   const setValue = useCallback((b: BigNumber) => onChange(b.toString()), [onChange]);
   const nextValue = new BigNumber(value);
+  const hasPeriod = value.includes('.');
+  const numberOfFractionalDigits = hasPeriod ? value.substring(value.lastIndexOf('.')).length : 0;
   return [
     value,
     nextValue,
@@ -107,6 +112,7 @@ export default function usePaymentButtons(
       getBackspace,
       getPeriod,
       setValue,
+      numberOfFractionalDigits,
     },
   ];
 }

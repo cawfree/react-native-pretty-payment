@@ -61,6 +61,7 @@ type AmountProps = PaymentButtonsHelpers & {
 function Amount({valueAsString, ...props}: AmountProps): JSX.Element {
   const intl = useIntl();
   intl.formatNumber();
+  const {numberOfFractionalDigits} = props;
   return (
     <PaymentAmount
       {...props}
@@ -69,7 +70,7 @@ function Amount({valueAsString, ...props}: AmountProps): JSX.Element {
     >
       {intl.formatNumber(
         valueAsString,
-        {style: 'currency', currency: 'usd'},
+        {style: 'currency', currency: 'usd', minimumFractionDigits: numberOfFractionalDigits},
       )}
     </PaymentAmount>
   );
