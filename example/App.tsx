@@ -94,10 +94,13 @@ function Amount({valueAsString, ...props}: AmountProps): JSX.Element {
 }
 
 export default function App() {
-  const {height} = useWindowDimensions();
+  const {width, height} = useWindowDimensions();
   const [valueAsString, value, opts] = usePaymentButtons(
-    new BigNumber(0),
-    {min: new BigNumber(50), max: new BigNumber(100)},
+    new BigNumber(1), {
+      min: new BigNumber(1),
+      max: new BigNumber(75),
+      maximumFractionDigits: 2,
+    },
   );
   const renderCharacter = React.useCallback((children: string): JSX.Element => {
     return (

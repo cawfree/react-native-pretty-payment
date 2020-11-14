@@ -35,6 +35,7 @@ export type Buttons = {
 export type usePaymentButtonsParams = {
   readonly min: BigNumber;
   readonly max: BigNumber;
+  readonly maximumFractionDigits: number;
 };
 
 export type PaymentButtonsHelpers = {
@@ -57,10 +58,12 @@ export default function usePaymentButtons(
   initialValue: BigNumber,
   params: usePaymentButtonsParams,
 ): usePaymentButtonsResult {
-  const {min, max} = params;
+  const {min, max, maximumFractionDigits} = params;
   const [value, onChange] = useState<string>(() => initialValue.toString());
   const hasPeriod = value.includes('.');
+  const numberOfFractionalDigits = hasPeriod ? value.substring(value.lastIndexOf(Controls.PERIOD)).length -1 : 0;
   const nextValue = new BigNumber(value);
+  const shouldDisableDigits = numberOfFractionalDigits >= maximumFractionDigits;
 
   const buildButtonProps = useCallback((
     onPress: onPressHandler,
@@ -95,7 +98,7 @@ export default function usePaymentButtons(
       () => appendDigit(`${i}`),
       [appendDigit],
     );
-    const disabled = new BigNumber(`${value}${i}`).gt(max);
+    const disabled = shouldDisableDigits || new BigNumber(`${value}${i}`).gt(max);
     props.push(buildButtonProps(onPress, disabled, `${i}`));
   }
   const buttons = (Object.assign({
@@ -109,7 +112,6 @@ export default function usePaymentButtons(
   const getBackspace = useCallback(() => buttons[Controls.BACKSPACE], [buttons]);
   const getPeriod = useCallback(() => buttons[Controls.PERIOD], [buttons]);
   const setValue = useCallback((b: BigNumber) => onChange(b.toString()), [onChange]);
-  const numberOfFractionalDigits = hasPeriod ? value.substring(value.lastIndexOf('.')).length : 0;
 
   const overflow = nextValue.isGreaterThan(max);
   const underflow = nextValue.isLessThan(min);
