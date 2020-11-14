@@ -6,12 +6,18 @@ const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 export type BlurryTouchableProps = {
   readonly style?: ViewStyle | readonly ViewStyle[];
-  readonly disabled?: boolean;
   readonly children: JSX.Element | readonly JSX.Element[];
+  readonly duration: number;
+};
+
+export type Blurry = {
   readonly tint?: string;
   readonly min: number;
   readonly max: number;
-  readonly duration: number;
+}
+
+export type PressableBlurryTouchableProps = Blurry & BlurryTouchableProps & {
+  readonly disabled?: boolean;
   readonly onPress: (e: GestureResponderEvent) =>void;
 };
 
@@ -28,7 +34,7 @@ export default function BlurryTouchable({
   max,
   duration,
   onPress,
-}: BlurryTouchableProps): JSX.Element {
+}: PressableBlurryTouchableProps): JSX.Element {
   const [intensity] = React.useState(() => new Animated.Value(0));
   const shouldChangeIntensity = React.useCallback((toValue: number) => {
     Animated.timing(intensity, {

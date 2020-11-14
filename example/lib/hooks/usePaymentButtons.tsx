@@ -1,6 +1,7 @@
 import {useCallback, useState} from 'react';
 import BigNumber from 'bignumber.js';
-import {GestureResponderEvent} from 'react-native';
+import {GestureResponderEvent, LayoutAnimation} from 'react-native';
+import {useImmediateLayoutAnimation} from 'use-layout-animation';
 
 const ZERO_STR = '0';
 type onPressHandler = (e: GestureResponderEvent) => void;
@@ -102,12 +103,16 @@ export default function usePaymentButtons(
   const nextValue = new BigNumber(value);
   const hasPeriod = value.includes('.');
   const numberOfFractionalDigits = hasPeriod ? value.substring(value.lastIndexOf('.')).length : 0;
+
+  const overflow = nextValue.isGreaterThan(max);
+  const underflow = nextValue.isLessThan(min);
+  useImmediateLayoutAnimation([overflow, underflow], LayoutAnimation.Presets.easeInEaseOut);
   return [
     value,
     nextValue,
     {
-      overflow: nextValue.isGreaterThan(max),
-      underflow: nextValue.isLessThan(min),
+      overflow,
+      underflow,
       getDigits,
       getBackspace,
       getPeriod,

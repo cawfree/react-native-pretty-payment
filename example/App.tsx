@@ -12,10 +12,11 @@ import {
  } from 'react-native';
 import BigNumber from 'bignumber.js';
 import Animation from 'lottie-react-native';
-import {FormattedNumber, IntlProvider, useIntl} from 'react-intl';
+import {IntlProvider, useIntl} from 'react-intl';
 
 import {
   BlurryTouchable,
+  BlurryIndicator,
   usePaymentButtons,
   PaymentPad,
   ButtonProps,
@@ -51,7 +52,24 @@ const styles = StyleSheet.create({
     textShadowRadius: 1,
   },
   flex: {flex: 1},
-
+  indicator: {
+    padding: 10,
+    borderRadius: 10,
+  },
+  indicatorText: {
+    fontSize: 20,
+    fontWeight: '400',
+    color: 'white',
+    opacity: 0.75,
+    textShadowColor: 'rgba(255, 255, 255, 1)',
+    textShadowRadius: 1,
+  },
+  noOverflow: {overflow: 'hidden'},
+  row: {
+    width: '100%',
+    flexDirection: 'row',
+  },
+  rowPadding: {paddingHorizontal: 50},
 });
 
 type AmountProps = PaymentButtonsHelpers & {
@@ -60,7 +78,6 @@ type AmountProps = PaymentButtonsHelpers & {
 
 function Amount({valueAsString, ...props}: AmountProps): JSX.Element {
   const intl = useIntl();
-  intl.formatNumber();
   const {numberOfFractionalDigits} = props;
   return (
     <PaymentAmount
@@ -136,13 +153,23 @@ export default function App() {
       />
       <ScrollView>
         <View style={{height: height * 0.16}} />
+        <View style={[styles.row, styles.rowPadding]}>
+          <View style={styles.flex} />
+          <BlurryIndicator
+            style={[styles.center, styles.noOverflow, styles.indicator]}
+            visible={opts.underflow || opts.overflow}
+            duration={250}
+          >
+            <Text style={styles.indicatorText} children={opts.underflow ? "UNDER" : opts.overflow ? "OVER" : ""} />
+          </BlurryIndicator>
+        </View>
         <Amount
           {...opts}
           valueAsString={valueAsString}
         />
         <PaymentPad
           {...opts}
-          style={{paddingHorizontal: 50, paddingVertical: 10}}
+          style={[styles.rowPadding, {paddingVertical: 10}]}
           renderDigit={renderDigit}
           renderBackspace={renderIsolated}
           renderPeriod={renderIsolated}

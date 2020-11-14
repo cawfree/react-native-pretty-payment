@@ -5657,6 +5657,11 @@ use-deep-compare-effect@^1.4.0:
     "@types/use-deep-compare-effect" "^1.2.0"
     dequal "^2.0.2"
 
+use-layout-animation@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/use-layout-animation/-/use-layout-animation-0.0.2.tgz#ac8eb488e74dc2e56988246983da2278b3cdd143"
+  integrity sha512-N71kmMs4Ni1Gc4QVqQg7cC8EsrybU0QEhp6Rl06V1Em7/6QBLDLXqc+NQRNVaqC5KRnE0FVKJCyy9Jc+uQbVsA==
+
 use-subscription@^1.0.0:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.5.1.tgz#73501107f02fad84c6dd57965beb0b75c68c42d1"
