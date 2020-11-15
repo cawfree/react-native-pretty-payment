@@ -38,52 +38,42 @@ For a full demonstration, please check out the included [**Example**](./example/
 
 `usePaymentButtons` is used to synthesize all of the form validation logic and related props required to pass into a payment input layout.
 
+
 ```typescript
 type usePaymentButtonsParams = {
   readonly min: BigNumber; // min required payment
   readonly max: BigNumber; // max required payment
-  readonly maximumFractionDigits: number;
+  readonly maximumFractionDigits: number; // maximum digits the user can enter
+}
+```
+
+
+```typescript
+type usePaymentButtonsResult = [
+  valueAsString: string, // currently entered value as a string
+  value: BigNumber, // currently entered value as a non-lossy numeric representation
+  helpers: PaymentButtonsHelpers, // props and useful functions to help build your form
+]
+```
+
+```typescript
+type PaymentButtonsHelpers = {
+  readonly overflow: boolean; // signalling value exceeds max
+  readonly underflow: boolean; // signalling value is less than min
+  readonly getDigits: () => readonly ButtonProps[]; // returns all digit props
+  readonly getBackspace: () => ButtonProps; // returns backspace props
+  readonly getPeriod: () => ButtonProps; // returns decimal point props
+  readonly hasPeriod: boolean; // defines whether the user has tapped the decimal point
+  readonly numberOfFractionalDigits: number; // the number of decimal points that have been entered
 }
 ```
 
 ```typescript
 type ButtonProps = {
-  readonly onPress: onPressHandler;
-  readonly disabled: boolean;
-  readonly children: string;
+  readonly onPress: onPressHandler; // callback used to change the entered payment value
+  readonly disabled: boolean; // whether the input is disabled
+  readonly children: string; // which value is being rendered [0123456789.-]
 };
-```
-
-```typescript
-type PaymentButtonsHelpers = {
-  readonly overflow: boolean;
-  readonly underflow: boolean;
-  readonly getDigits: () => readonly ButtonProps[];
-  readonly getBackspace: () => ButtonProps;
-  readonly getPeriod: () => ButtonProps;
-  readonly hasPeriod: boolean;
-  readonly numberOfFractionalDigits: number;
-}
-```
-
-```typescript
-type PaymentButtonsHelpers = {
-  readonly overflow: boolean;
-  readonly underflow: boolean;
-  readonly getDigits: () => readonly ButtonProps[];
-  readonly getBackspace: () => ButtonProps;
-  readonly getPeriod: () => ButtonProps;
-  readonly hasPeriod: boolean;
-  readonly numberOfFractionalDigits: number;
-}
-```
-
-```typescript
-type usePaymentButtonsResult = [
-  valueAsString: string,
-  value: BigNumber,
-  helpers: PaymentButtonsHelpers,
-]
 ```
 
 ## ✌️ License
