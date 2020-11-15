@@ -15,7 +15,7 @@ yarn add react-native-pretty-payment
 
 Firstly, you don't actually _need_ any of the included UI to begin accepting payment information; all of the important business logic and props are retained inside a call to [`usePaymentButtons`](./src/hooks/usePaymentButtons.ts):
 
-```javascript
+```typescript
 import {usePaymentButtons} from 'react-native-pretty-payment';
 import BigNumber from 'bignumber.js';
 
@@ -29,6 +29,50 @@ const [valueAsString, value, {...helpers}] = usePaymentButtons(new BigNumber(1),
 From this point, you're free render as you please, with the assurance that input and output values are going to remain bounded to the parameters supplied in the initial invocation of `usePaymentButtons`.
 
 For a full demonstration, please check out the included [**Example**](./example/App.tsx).
+
+## 📒 Reference
+
+### `usePaymentButtons`
+
+```typescript
+type usePaymentButtonsParams = {
+  readonly min: BigNumber;
+  readonly max: BigNumber;
+  readonly maximumFractionDigits: number;
+}
+```
+
+```typescript
+type PaymentButtonsHelpers = {
+  readonly overflow: boolean;
+  readonly underflow: boolean;
+  readonly getDigits: () => readonly ButtonProps[];
+  readonly getBackspace: () => ButtonProps;
+  readonly getPeriod: () => ButtonProps;
+  readonly hasPeriod: boolean;
+  readonly numberOfFractionalDigits: number;
+}
+```
+
+```typescript
+type PaymentButtonsHelpers = {
+  readonly overflow: boolean;
+  readonly underflow: boolean;
+  readonly getDigits: () => readonly ButtonProps[];
+  readonly getBackspace: () => ButtonProps;
+  readonly getPeriod: () => ButtonProps;
+  readonly hasPeriod: boolean;
+  readonly numberOfFractionalDigits: number;
+}
+```
+
+```typescript
+type usePaymentButtonsResult = [
+  valueAsString: string,
+  value: BigNumber,
+  helpers: PaymentButtonsHelpers,
+]
+```
 
 ## ✌️ License
 [**MIT**](./LICENSE)
