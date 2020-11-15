@@ -50,9 +50,9 @@ type usePaymentButtonsParams = {
 
 ```typescript
 type usePaymentButtonsResult = [
-  valueAsString: string, // currently entered value as a string
-  value: BigNumber, // currently entered value as a non-lossy numeric representation
-  helpers: PaymentButtonsHelpers, // props and useful functions to help build your form
+  readonly valueAsString: string, // currently entered value as a string
+  readonly value: BigNumber, // currently entered value as a non-lossy numeric representation
+  readonly helpers: PaymentButtonsHelpers, // props and useful functions to help build your form
 ]
 ```
 

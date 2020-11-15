@@ -49,9 +49,9 @@ export type PaymentButtonsHelpers = {
 };
 
 export type usePaymentButtonsResult = [
-  valueAsString: string,
-  value: BigNumber,
-  helpers: PaymentButtonsHelpers,
+  readonly valueAsString: string,
+  readonly value: BigNumber,
+  readonly helpers: PaymentButtonsHelpers,
 ];
 
 export default function usePaymentButtons(
