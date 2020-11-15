@@ -44,7 +44,7 @@ export type PaymentButtonsHelpers = {
   readonly getDigits: () => readonly ButtonProps[];
   readonly getBackspace: () => ButtonProps;
   readonly getPeriod: () => ButtonProps;
-  readonly setValue: (value: BigNumber) => void;
+  readonly hasPeriod: boolean;
   readonly numberOfFractionalDigits: number;
 };
 
@@ -111,7 +111,6 @@ export default function usePaymentButtons(
   }, [buttons]);
   const getBackspace = useCallback(() => buttons[Controls.BACKSPACE], [buttons]);
   const getPeriod = useCallback(() => buttons[Controls.PERIOD], [buttons]);
-  const setValue = useCallback((b: BigNumber) => onChange(b.toString()), [onChange]);
 
   const overflow = nextValue.isGreaterThan(max);
   const underflow = nextValue.isLessThan(min);
@@ -128,7 +127,7 @@ export default function usePaymentButtons(
       getDigits,
       getBackspace,
       getPeriod,
-      setValue,
+      hasPeriod,
       numberOfFractionalDigits,
     },
   ];

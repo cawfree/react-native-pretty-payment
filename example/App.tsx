@@ -22,6 +22,7 @@ import {
   ButtonProps,
   PaymentAmount,
   PaymentButtonsHelpers,
+  Controls,
 } from './lib';
 
 import Gradient from './assets/gradient.json';
@@ -78,17 +79,20 @@ type AmountProps = PaymentButtonsHelpers & {
 
 function Amount({valueAsString, ...props}: AmountProps): JSX.Element {
   const intl = useIntl();
-  const {numberOfFractionalDigits} = props;
+  const {numberOfFractionalDigits, hasPeriod} = props;
+  const formattedNumber = intl.formatNumber(valueAsString, {
+    style: 'currency',
+    currency: 'usd',
+    minimumFractionDigits: numberOfFractionalDigits,
+  });
+  const withForcedPeriod = hasPeriod && numberOfFractionalDigits === 0 ? `${formattedNumber}${Controls.PERIOD}` : formattedNumber;
   return (
     <PaymentAmount
       {...props}
       style={styles.currencyText}
       height={100}
     >
-      {intl.formatNumber(
-        valueAsString,
-        {style: 'currency', currency: 'usd', minimumFractionDigits: numberOfFractionalDigits},
-      )}
+      {withForcedPeriod}
     </PaymentAmount>
   );
 }
