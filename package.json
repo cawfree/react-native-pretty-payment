@@ -1,0 +1,57 @@
+{
+  "name": "react-native-pretty-payment",
+  "version": "0.0.1-alpha.0",
+  "description": "⚛️ 🤑 Super pretty payment inputs for React Native.",
+  "main": "dist",
+  "repository": "https://github.com/cawfree/react-native-pretty-payment",
+  "author": "Alex Thomas (@cawfree) <alex@myco.space>",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn ; babel src --plugins @babel/plugin-transform-typescript --extensions '.ts,.tsx' --out-dir dist ; rm -rf node_modules",
+    "prettify": "yarn prettier --write '**/*.tsx|**/*.ts'",
+    "lint": "eslint --fix --ext .ts,.tsx ./src",
+    "test": "jest"
+  },
+  "keywords": [
+    "react-native",
+    "payment",
+    "animated",
+    "keypad",
+    "number"
+  ],
+  "private": false,
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-typescript": "^7.11.0",
+    "@babel/polyfill": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jsrsasign": "^8.0.8",
+    "@types/react": "^16.9.56",
+    "@types/type-check": "^0.3.27",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.5",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "husky": "^4.2.5",
+    "jest": "^26.2.2",
+    "leasot": "^11.1.0",
+    "prettier": "^2.0.5",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-native": "^0.63.3"
+  },
+  "dependencies": {
+    "bignumber.js": "^9.0.1",
+    "expo-blur": "^8.2.0",
+    "react-native-split-styles": "^0.0.1-alpha.1",
+    "use-layout-animation": "^0.0.2"
+  }
+}

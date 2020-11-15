@@ -8,7 +8,6 @@ import {
   Text,
   StyleSheet,
   useWindowDimensions,
-  TouchableOpacity,
  } from 'react-native';
 import BigNumber from 'bignumber.js';
 import Animation from 'lottie-react-native';
@@ -23,7 +22,7 @@ import {
   PaymentAmount,
   PaymentButtonsHelpers,
   Controls,
-} from './lib';
+} from 'react-native-pretty-payment';
 
 import Gradient from './assets/gradient.json';
 
