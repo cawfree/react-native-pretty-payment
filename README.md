@@ -72,7 +72,7 @@ type PaymentButtonsHelpers = {
 type ButtonProps = {
   readonly onPress: onPressHandler; // callback used to change the entered payment value
   readonly disabled: boolean; // whether the input is disabled
-  readonly children: string; // which value is being rendered [0123456789.-]
+  readonly children: string; // which value is being rendered [0123456789\.<]
 };
 ```
 
