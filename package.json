@@ -1,6 +1,6 @@
 {
   "name": "react-native-pretty-payment",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "⚛️ 🤑 Super pretty payment inputs for React Native.",
   "main": "dist",
   "repository": "https://github.com/cawfree/react-native-pretty-payment",
