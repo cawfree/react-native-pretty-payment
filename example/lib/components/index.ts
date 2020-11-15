@@ -1,3 +1,4 @@
+export {default as BouncyText} from './BouncyText';
 export {default as BlurryTouchable} from './BlurryTouchable';
 export {default as BlurryIndicator} from './BlurryIndicator';
 export {default as PaymentPad} from './PaymentPad';

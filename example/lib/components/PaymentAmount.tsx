@@ -3,6 +3,7 @@ import {Text, View, StyleSheet, ScrollView, ViewStyle, TextStyle, LayoutAnimatio
 import {useSplitStyles} from 'react-native-split-styles';
 import TextPreset from 'react-native-split-styles/dist/presets/Text';
 
+import BouncyText from './BouncyText';
 import type {PaymentButtonsHelpers} from '../hooks';
 
 export type PaymentAmountProps = PaymentButtonsHelpers & {
@@ -44,15 +45,22 @@ export default function PaymentAmount({
           horizontal
           showsHorizontalScrollIndicator={false}>
           <View style={[styles.center, layout]}>
-            <Text 
-              style={[{fontSize: height, maxHeight}, textStyle]}
-              adjustsFontSizeToFit
-            >
-              {children}
-            </Text>
+            <BouncyText
+              style={[
+                {fontSize: height, maxHeight},
+                textStyle,
+              ]}
+              children={children}
+            />
           </View>
         </ScrollView>
       )}
     </View>
   );
 }
+//<Text 
+//              style={[{fontSize: height, maxHeight}, textStyle]}
+//              adjustsFontSizeToFit
+//            >
+//              {children}
+//            </Text>
