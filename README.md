@@ -1,9 +1,7 @@
 # react-native-pretty-payment
 Super pretty payment inputs for [**React Native**](https://reactnative.dev). It exports a bunch of hooks and utility components to help you deliver a sweeter payment experience, faster. It uses [**bignumber.js**](https://github.com/MikeMcl/bignumber.js/) to avoid floating point rounding errors.
 
-#### See it in action!
-[**☮️  Hippy Demo**](https://twitter.com/cawfree/status/1327734123415302144?s=20)
-[**😴 Sleepy Demo**](https://twitter.com/cawfree/status/1327800083908325378?s=20)
+[**☮️  Hippy Demo**](https://twitter.com/cawfree/status/1327734123415302144?s=20) [**😴 Sleepy Demo**](https://twitter.com/cawfree/status/1327800083908325378?s=20)
 
 ## 🚀 Getting Started
 
