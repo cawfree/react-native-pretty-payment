@@ -11,6 +11,8 @@ Using [**Yarn**](https://yarnpkg.com):
 yarn add react-native-pretty-payment
 ```
 
+> This solution is most effective when comprised with an internationalization library with support for currency, such as [`react-intl`](https://github.com/formatjs/formatjs).
+
 ## ✏️ Usage
 
 Firstly, you don't actually _need_ any of the included UI to begin accepting payment information; all of the important business logic and props are retained inside a call to [`usePaymentButtons`](./src/hooks/usePaymentButtons.ts):
@@ -34,12 +36,22 @@ For a full demonstration, please check out the included [**Example**](./example/
 
 ### `usePaymentButtons`
 
+`usePaymentButtons` is used to synthesize all of the form validation logic and related props required to pass into a payment input layout.
+
 ```typescript
 type usePaymentButtonsParams = {
-  readonly min: BigNumber;
-  readonly max: BigNumber;
+  readonly min: BigNumber; // min required payment
+  readonly max: BigNumber; // max required payment
   readonly maximumFractionDigits: number;
 }
+```
+
+```typescript
+type ButtonProps = {
+  readonly onPress: onPressHandler;
+  readonly disabled: boolean;
+  readonly children: string;
+};
 ```
 
 ```typescript
